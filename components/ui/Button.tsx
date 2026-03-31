@@ -1,9 +1,9 @@
-import React from "react"
+import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-	variant?: "primary" | "secondary" | "danger"
-	size?: "sm" | "md" | "lg"
-	fullWidth?: boolean
+	variant?: "primary" | "secondary" | "ghost" | "outline";
+	size?: "sm" | "md" | "lg";
+	fullWidth?: boolean;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -12,7 +12,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			variant = "primary",
 			size = "md",
 			fullWidth = false,
-			className,
+			className = "",
 			children,
 			...props
 		},
@@ -26,16 +26,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 			className,
 		]
 			.filter(Boolean)
-			.join(" ")
+			.join(" ");
 
 		return (
 			<button ref={ref} className={classes} {...props}>
 				{children}
 			</button>
-		)
+		);
 	},
-)
+);
 
-Button.displayName = "Button"
+Button.displayName = "Button";
 
-export default Button
+export default Button;
