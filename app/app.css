@@ -326,13 +326,26 @@
 					}
 
 					.share {
-						@apply bg-black text-white h-9 shadow-sm hover:bg-zinc-800;
+						@apply bg-black text-white h-9 shadow-sm hover:bg-zinc-800 flex items-center gap-2;
+
+						&.is-active {
+							@apply border border-green-500/30;
+						}
 					}
 				}
 			}
 
+			.pulse-dot {
+				@apply w-1.5 h-1.5 rounded-full bg-green-500 relative flex-shrink-0;
+
+				&::after {
+					content: "";
+					@apply absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75;
+				}
+			}
+
 			.render-area {
-				@apply relative bg-zinc-100 min-h-105;
+				@apply relative bg-zinc-100 h-[450px];
 
 				.render-img {
 					@apply w-full h-full object-contain transition-all duration-700 opacity-100 scale-100;
@@ -385,15 +398,15 @@
 				}
 
 				.compare-stage {
-					@apply relative bg-zinc-100 overflow-hidden;
+					@apply relative bg-zinc-100 overflow-hidden h-[450px];
 				}
 
 				.compare-fallback {
-					@apply flex items-center justify-center;
+					@apply flex items-center justify-center h-full;
 				}
 
 				.compare-img {
-					@apply w-full h-auto object-contain;
+					@apply w-full h-full object-contain;
 				}
 			}
 		}

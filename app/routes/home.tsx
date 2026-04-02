@@ -132,7 +132,15 @@ export default function Home() {
 
 					<div className="projects-grid">
 						{projects.map(
-							({ id, name, renderedImage, sourceImage, timestamp }) => (
+							({
+								id,
+								name,
+								renderedImage,
+								sourceImage,
+								timestamp,
+								sharedBy,
+								isPublic,
+							}) => (
 								<div
 									key={id}
 									className="project-card group"
@@ -141,9 +149,11 @@ export default function Home() {
 									<div className="preview">
 										<img src={renderedImage || sourceImage} alt="Project" />
 
-										<div className="badge">
-											<span>Community</span>
-										</div>
+										{isPublic && (
+											<div className="badge">
+												<span>Community</span>
+											</div>
+										)}
 									</div>
 
 									<div className="card-body">
@@ -153,7 +163,7 @@ export default function Home() {
 											<div className="meta">
 												<Clock size={12} />
 												<span>{new Date(timestamp).toLocaleDateString()}</span>
-												<span>By JS Mastery</span>
+												<span>By {sharedBy || "You"}</span>
 											</div>
 										</div>
 										<div className="arrow">
