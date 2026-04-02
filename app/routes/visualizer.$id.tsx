@@ -15,6 +15,30 @@ import {
 	unshareProject,
 	deleteProject,
 } from "../../lib/puter.action";
+import type { Route } from "./+types/visualizer.$id";
+
+export function meta({ params }: Route.MetaArgs) {
+	const projectId = params.id;
+	return [
+		{ title: `Residence ${projectId} | Roomify` },
+		{
+			name: "description",
+			content: `Visualize and architectural renderings for project ${projectId} on Roomify.`,
+		},
+		{
+			property: "og:title",
+			content: `Residence ${projectId} | Roomify`,
+		},
+		{
+			property: "og:image",
+			content: "/banner.png",
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image",
+		},
+	];
+}
 
 const VisualizerId = () => {
 	const { id } = useParams();
