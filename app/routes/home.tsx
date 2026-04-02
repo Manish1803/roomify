@@ -9,8 +9,46 @@ import { createProject, getProjects } from "../../lib/puter.action";
 
 export function meta({}: Route.MetaArgs) {
 	return [
-		{ title: "New React Router App" },
-		{ name: "description", content: "Welcome to React Router!" },
+		{ title: "Roomify | Build Beautiful Spaces" },
+		{
+			name: "description",
+			content:
+				"Roomify is an AI-first design environment that helps you visualize, render, and ship architectural projects faster than ever.",
+		},
+		{
+			property: "og:title",
+			content: "Roomify | Build Beautiful Spaces",
+		},
+		{
+			property: "og:description",
+			content:
+				"Visualize and render architectural projects in seconds with Roomify's AI-first design environment.",
+		},
+		{
+			property: "og:image",
+			content: "/banner.png",
+		},
+		{
+			property: "og:type",
+			content: "website",
+		},
+		{
+			name: "twitter:card",
+			content: "summary_large_image",
+		},
+		{
+			name: "twitter:title",
+			content: "Roomify | Build Beautiful Spaces",
+		},
+		{
+			name: "twitter:description",
+			content:
+				"Visualize and render architectural projects in seconds with Roomify's AI-first design environment.",
+		},
+		{
+			name: "twitter:image",
+			content: "/banner.png",
+		},
 	];
 }
 
