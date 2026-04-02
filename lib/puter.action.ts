@@ -215,3 +215,27 @@ export const unshareProject = async ({ id }: { id: string }) => {
 		return null;
 	}
 };
+
+export const deleteProject = async ({ id }: { id: string }) => {
+	if (!PUTER_WORKER_URL) return null;
+
+	try {
+		const response = await puter.workers.exec(
+			`${PUTER_WORKER_URL}/api/projects/delete`,
+			{
+				method: "POST",
+				body: JSON.stringify({ id }),
+			},
+		);
+
+		if (!response.ok) {
+			console.error("Failed to delete project:", await response.text());
+			return false;
+		}
+
+		return true;
+	} catch (error) {
+		console.error("Failed to delete project:", error);
+		return false;
+	}
+};

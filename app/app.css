@@ -326,8 +326,21 @@
 					}
 
 					.share {
-						@apply bg-black text-white h-9 shadow-sm hover:bg-zinc-800;
+						@apply bg-black text-white h-9 shadow-sm hover:bg-zinc-800 flex items-center gap-2;
+
+						&.is-active {
+							@apply border border-green-500/30;
+						}
 					}
+				}
+			}
+
+			.pulse-dot {
+				@apply w-1.5 h-1.5 rounded-full bg-green-500 relative flex-shrink-0;
+
+				&::after {
+					content: "";
+					@apply absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75;
 				}
 			}
 
