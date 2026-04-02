@@ -18,25 +18,22 @@ import {
 import type { Route } from "./+types/visualizer.$id";
 
 export function meta({ params }: Route.MetaArgs) {
-	const projectId = params.id;
+	const projectId = params.id ?? "Unknown";
+	const title = `Residence ${projectId} | Roomify`;
+	const description = `Visualize and architectural renderings for project ${projectId} on Roomify's AI-first design environment.`;
+	const image = "/banner.png";
+
 	return [
-		{ title: `Residence ${projectId} | Roomify` },
-		{
-			name: "description",
-			content: `Visualize and architectural renderings for project ${projectId} on Roomify.`,
-		},
-		{
-			property: "og:title",
-			content: `Residence ${projectId} | Roomify`,
-		},
-		{
-			property: "og:image",
-			content: "/banner.png",
-		},
-		{
-			name: "twitter:card",
-			content: "summary_large_image",
-		},
+		{ title },
+		{ name: "description", content: description },
+		{ property: "og:title", content: title },
+		{ property: "og:description", content: description },
+		{ property: "og:image", content: image },
+		{ property: "og:type", content: "website" },
+		{ name: "twitter:card", content: "summary_large_image" },
+		{ name: "twitter:title", content: title },
+		{ name: "twitter:description", content: description },
+		{ name: "twitter:image", content: image },
 	];
 }
 
