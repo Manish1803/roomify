@@ -8,12 +8,16 @@ import { Box, Download, RefreshCcw, Share2, X } from "lucide-react";
 
 import Button from "../../components/ui/Button";
 import { generate3DView } from "../../lib/ai.action";
-import { createProject, getProjectById } from "../../lib/puter.action";
+import {
+	createProject,
+	getProjectById,
+	shareProject,
+	unshareProject,
+} from "../../lib/puter.action";
 
 const VisualizerId = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const { userId } = useOutletContext<AuthContext>();
 
 	const hasInitialGenerated = useRef(false);
 
@@ -21,7 +25,10 @@ const VisualizerId = () => {
 	const [isProjectLoading, setIsProjectLoading] = useState(true);
 
 	const [isProcessing, setIsProcessing] = useState(false);
+	const [isSharing, setIsSharing] = useState(false);
 	const [currentImage, setCurrentImage] = useState<string | null>(null);
+
+	const { userName, userId } = useOutletContext<AuthContext>();
 
 	const handleBack = () => navigate(-1);
 	const handleExport = () => {
@@ -33,6 +40,29 @@ const VisualizerId = () => {
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+	};
+
+	const handleShare = async () => {
+		if (!project || !id) return;
+
+		try {
+			setIsSharing(true);
+			if (project.isPublic) {
+				const updated = await unshareProject({ id });
+				if (updated) setProject(updated);
+			} else {
+				const metadata = {
+					sharedBy: userName || "Anonymous User",
+					ownerId: userId,
+				};
+				const updated = await shareProject({ id, metadata });
+				if (updated) setProject(updated);
+			}
+		} catch (error) {
+			console.error("Failed to toggle share status:", error);
+		} finally {
+			setIsSharing(false);
+		}
 	};
 
 	const runGeneration = async (item: DesignItem) => {
@@ -135,7 +165,9 @@ const VisualizerId = () => {
 						<div className="panel-meta">
 							<p>Project</p>
 							<h2>{project?.name || `Residence ${id}`}</h2>
-							<p className="note">Created by You</p>
+							<p className="note">
+								By {project?.sharedBy || (project?.ownerId === userId ? "You" : "Unknown")}
+							</p>
 						</div>
 
 						<div className="panel-actions">
@@ -147,8 +179,14 @@ const VisualizerId = () => {
 							>
 								<Download className="w-4 h-4 mr-2" /> Export
 							</Button>
-							<Button size="sm" onClick={() => {}} className="share">
-								<Share2 className="w-4 h-4 mr-2" /> Share
+							<Button
+								size="sm"
+								onClick={handleShare}
+								className="share"
+								disabled={isSharing || !currentImage}
+							>
+								<Share2 className="w-4 h-4 mr-2" />
+								{isSharing ? "Processing..." : project?.isPublic ? "Unshare" : "Share"}
 							</Button>
 						</div>
 					</div>
@@ -195,19 +233,19 @@ const VisualizerId = () => {
 						{project?.sourceImage && currentImage ? (
 							<ReactCompareSlider
 								defaultValue={50}
-								style={{ width: "100%", height: "auto" }}
+								style={{ width: "100%", height: "100%" }}
 								itemOne={
 									<ReactCompareSliderImage
 										src={project?.sourceImage}
 										alt="before"
-										className="compare-img"
+										style={{ objectFit: "contain", width: "100%", height: "100%" }}
 									/>
 								}
 								itemTwo={
 									<ReactCompareSliderImage
 										src={project?.renderedImage || currentImage}
 										alt="after"
-										className="compare-img"
+										style={{ objectFit: "contain", width: "100%", height: "100%" }}
 									/>
 								}
 							/>
